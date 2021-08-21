@@ -16,13 +16,13 @@ namespace TRMDataManager.Controllers
         {
             string userId = RequestContext.Principal.Identity.GetUserId();
 
-            return new string[] { "value1", "value2", userId };
+            return new string[] { "시스템이 만든 value1", "시스템이 만든 value2", userId };
         }
 
         // GET api/values/5
         public string Get(int id)
         {
-            return "value";
+            return "시스템이 만든 value";
         }
 
         // POST api/values
