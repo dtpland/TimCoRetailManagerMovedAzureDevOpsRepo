@@ -1,19 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31612.314
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CF41B5D1-FA8A-40DD-B434-C5447ADC5D0A}"
-	ProjectSection(SolutionItems) = preProject
-		TextFile1.txt = TextFile1.txt
-		TextFile2.txt = TextFile2.txt
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRMDataManager", "TRMDataManager\TRMDataManager.csproj", "{B1278E90-9A2E-4E27-911C-E2B24E655817}"
 EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1278E90-9A2E-4E27-911C-E2B24E655817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1278E90-9A2E-4E27-911C-E2B24E655817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1278E90-9A2E-4E27-911C-E2B24E655817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1278E90-9A2E-4E27-911C-E2B24E655817}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {134D49EF-102D-4EF0-9876-18B120CB13DF}
+		SolutionGuid = {33D6C41A-A458-48E9-8987-FDDC90A730B3}
 	EndGlobalSection
 EndGlobal
