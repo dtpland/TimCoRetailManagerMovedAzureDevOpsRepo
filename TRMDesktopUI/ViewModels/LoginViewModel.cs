@@ -70,6 +70,7 @@ namespace TRMDesktopUI.ViewModels
         }
 
 
+
         public bool CanLogIn
         {
             get
