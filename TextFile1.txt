@@ -4,7 +4,9 @@
 이것은 두번째...
 
 
-
+According to the System.Net.Http.Formatting NuGet package page, 
+the System.Net.Http.Formatting package is now legacy 
+and can instead be found in the Microsoft.AspNet.WebApi.Client package available on NuGet here.
 
 
 tim@iamtimcorey.com 의 엑쎄스 토큰 9월 4일 만료
