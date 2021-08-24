@@ -62,8 +62,10 @@
     <Folder Include="dbo\Views" />
     <Folder Include="dbo\Stored Procedures" />
     <Folder Include="PublishLocations" />
+    <Folder Include="Snapshots" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Snapshots\TRMData_20210824_10-55-34.dacpac" />
     <None Include="PublishLocations\TRMData.publish.xml" />
   </ItemGroup>
   <ItemGroup>
