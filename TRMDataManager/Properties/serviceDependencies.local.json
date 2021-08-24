@@ -4,9 +4,9 @@
       "type": "secrets.user"
     },
     "mssql1": {
+      "secretStore": null,
       "type": "mssql.local",
-      "connectionId": "Test",
-      "secretStore": "LocalSecretsFile"
+      "connectionId": "ConnectionStrings:TEST-CONFIG"
     }
   }
 }
