@@ -1,0 +1,4 @@
+
+Lesson029-ManagingUserRoles => 여기까지가 .net framework 
+
+이후에는 이 Solution이 .net Core 로 업그레이드 되는 과정임.
