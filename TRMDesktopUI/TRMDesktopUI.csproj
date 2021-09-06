@@ -11,4 +11,4 @@
   <ItemGroup>
     <ProjectReference Include="..\TRMDesktopUI.Library\TRMDesktopUI.Library.csproj" />
   </ItemGroup>
-</Project>
+</Project> 

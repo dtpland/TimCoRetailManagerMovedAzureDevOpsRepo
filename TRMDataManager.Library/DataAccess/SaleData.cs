@@ -24,7 +24,11 @@ namespace TRMDataManager.Library.DataAccess
             // Start filling in the sale detail models we will save to the database
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
             ProductData products = new ProductData(_config);
-            var taxRate = ConfigHelper.GetTaxRate()/100;
+            //var taxRate = ConfigHelper.GetTaxRate()/100;
+
+            // HACK : 2021. 상기의 ConfigHelper.GetTaxRate()/100 문이 문제가 있어서
+            // 이곳에서 다음과 같이 바이 패싱함.
+            decimal taxRate = (decimal)(8.75 / 100);
 
             foreach (var item in saleInfo.SaleDetails)
             {
