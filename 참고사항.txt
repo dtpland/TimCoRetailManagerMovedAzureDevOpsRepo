@@ -2,3 +2,7 @@
 Lesson029-ManagingUserRoles => 여기까지가 .net framework 
 
 이후에는 이 Solution이 .net Core 로 업그레이드 되는 과정임.
+
+
+
+.net core upgrade 시 Caliburn.Micro(4.0.136-rc) 로 업데이트 하여 실행 성공시킴.
