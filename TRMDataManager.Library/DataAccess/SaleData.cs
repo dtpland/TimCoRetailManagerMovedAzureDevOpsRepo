@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,13 +10,17 @@ using TRMDataManager.Library.Models;
 
 namespace TRMDataManager.Library.DataAccess
 {
-    public class SaleData
+    public class SaleData : ISaleData
     {
-        private readonly IConfiguration _config;
+        private readonly IProductData _productData;
+        private readonly ISqlDataAccess _sql;
+        private readonly IConfigHelper _configHelper;
 
-        public SaleData(IConfiguration config)
+        public SaleData(IProductData productData, ISqlDataAccess sql, IConfigHelper configHelper)
         {
-            _config = config;
+            _productData = productData;
+            _sql = sql;
+            _configHelper = configHelper;
         }
 
         public void SaveSale(SaleModel saleInfo, string cashierId)
@@ -23,12 +28,11 @@ namespace TRMDataManager.Library.DataAccess
             //TODO: Make this SOLID/DRY/Better
             // Start filling in the sale detail models we will save to the database
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
-            ProductData products = new ProductData(_config);
-            //var taxRate = ConfigHelper.GetTaxRate()/100;
 
-            // HACK : 2021. 상기의 ConfigHelper.GetTaxRate()/100 문이 문제가 있어서
-            // 이곳에서 다음과 같이 바이 패싱함.
-            decimal taxRate = (decimal)(8.75 / 100);
+            //// HACK : 2021. 아래의 ConfigHelper.GetTaxRate()/100 문이 문제가 있어서
+            //// ConfigHelper 클래스를 제대로 작동하게 변경함.
+            var taxRate = _configHelper.GetTaxRate() / 100;
+
 
             foreach (var item in saleInfo.SaleDetails)
             {
@@ -39,7 +43,7 @@ namespace TRMDataManager.Library.DataAccess
                 };
 
                 // Get the information about this product
-                var productInfo = products.GetProductById(detail.ProductId);
+                var productInfo = _productData.GetProductById(detail.ProductId);
 
                 if (productInfo == null)
                 {
@@ -65,42 +69,37 @@ namespace TRMDataManager.Library.DataAccess
             };
 
             sale.Total = sale.SubTotal + sale.Tax;
-
-            using(SqlDataAccess sql = new SqlDataAccess(_config))
+            
+            try
             {
-                try
+                _sql.StartTransaction("TRMData");
+
+                // Save the sale model
+                _sql.SaveDataInTransaction("dbo.spSale_Insert", sale);
+
+                // Get the ID from the sale mode
+                sale.Id = _sql.LoadDataInTransaction<int, dynamic>("spSale_Lookup", new { sale.CashierId, sale.SaleDate }).FirstOrDefault();
+
+                // Finish filling in the sale detail models
+                foreach (var item in details)
                 {
-                    sql.StartTransaction("TRMData");
-
-                    // Save the sale model
-                    sql.SaveDataInTransaction("dbo.spSale_Insert", sale);
-
-                    // Get the ID from the sale mode
-                    sale.Id = sql.LoadDataInTransaction<int, dynamic>("spSale_Lookup", new { sale.CashierId, sale.SaleDate }).FirstOrDefault();
-
-                    // Finish filling in the sale detail models
-                    foreach (var item in details)
-                    {
-                        item.SaleId = sale.Id;
-                        // Save the sale detail models
-                        sql.SaveDataInTransaction("dbo.spSaleDetail_Insert", item);
-                    }
-
-                    sql.CommitTransaction();
+                    item.SaleId = sale.Id;
+                    // Save the sale detail models
+                    _sql.SaveDataInTransaction("dbo.spSaleDetail_Insert", item);
                 }
-                catch
-                {
-                    sql.RollbackTransaction();
-                    throw;
-                }
+
+                _sql.CommitTransaction();
+            }
+            catch
+            {
+                _sql.RollbackTransaction();
+                throw;
             }
         }
 
         public List<SaleReportModel> GetSaleReport()
         {
-            SqlDataAccess sql = new SqlDataAccess(_config);
-
-            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "TRMData");
+            var output = _sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "TRMData");
 
             return output;
         }

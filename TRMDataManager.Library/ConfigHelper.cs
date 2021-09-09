@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -7,12 +8,26 @@ using System.Threading.Tasks;
 
 namespace TRMDataManager.Library
 {
-    public class ConfigHelper
+    public class ConfigHelper : IConfigHelper
     {
-        // TODO: Move this from config to the API
-        public static decimal GetTaxRate()
+        private readonly IConfiguration _config;
+
+        public ConfigHelper(IConfiguration config)
         {
-            string rateText = ConfigurationManager.AppSettings["taxRate"];
+            _config = config;
+        }
+
+        // TODO: Move this from config to the API
+        public decimal GetTaxRate()
+        {
+            //// HACK : 2021. 아래의 구문이 문제가 있어서
+            //string rateText = ConfigurationManager.AppSettings["taxRate"];
+
+            //// ConfigHelper 클래스를 제대로 작동하게 변경함.
+            /// public static decimal GetTaxRate()=> public decimal GetTaxRate()
+            var section = _config.GetSection("AppSettings:taxRate");
+
+            string rateText = section.Value;
 
             bool IsValidTaxRate = Decimal.TryParse(rateText, out decimal output);
 
